@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 1.0
+apiversion: 2
+architectures: armv7 arm64 i386 x86_64
+description: bitpay_mobile_module
+author: Your Name
+license: Specify your license
+copyright: Copyright (c) 2019 by Your Company
+
+# these should not be edited
+name: bitpay_mobile_module
+moduleid: com.bitpay.mobile
+guid: 6e2e912a-d351-4e8c-bcc2-337aba6102d7
+platform: iphone
+minsdk: 7.5.0.GA
