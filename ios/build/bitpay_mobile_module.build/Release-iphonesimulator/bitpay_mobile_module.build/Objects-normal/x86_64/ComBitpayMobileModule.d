@@ -1,7 +1,7 @@
 dependencies: \
-  /Users/josh/Web/bitpay_mobile_module/ios/ComBitpayMobile_Prefix.pch \
-  /Users/josh/Web/bitpay_mobile_module/ios/Classes/ComBitpayMobileModule.m \
-  /Users/josh/Web/bitpay_mobile_module/ios/Classes/ComBitpayMobileModule.h \
+  /Users/josh/Web/modules/bitpay-mobile-ios/ios/ComBitpayMobile_Prefix.pch \
+  /Users/josh/Web/modules/bitpay-mobile-ios/ios/Classes/ComBitpayMobileModule.m \
+  /Users/josh/Web/modules/bitpay-mobile-ios/ios/Classes/ComBitpayMobileModule.h \
   /Users/josh/Library/Application\ Support/Titanium/mobilesdk/osx/7.5.0.GA/iphone/include/TiModule.h \
   /Users/josh/Library/Application\ Support/Titanium/mobilesdk/osx/7.5.0.GA/iphone/include/TiEvaluator.h \
   /Users/josh/Library/Application\ Support/Titanium/mobilesdk/osx/7.5.0.GA/iphone/include/KrollContext.h \
