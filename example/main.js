@@ -10,9 +10,9 @@ if (dev) {
 
 
 Bitpay.configure({
-    API_URL: 'http://b3systemsllc.com/bitpay/api.php',
-    API_KEY: 'randomkey',
-    API_CURRENCY: 'USD'
+    API_URL: '<your api endpoint>',
+    API_KEY: '<your api key>',
+    API_CURRENCY: '<currency, ie USD, etc>'
 })
 
 exports.getMain = function () {
