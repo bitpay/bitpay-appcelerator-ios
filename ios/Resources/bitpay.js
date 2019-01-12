@@ -1,10 +1,10 @@
-function Bitpay() {
+function BitPay() {
 
 }
-Bitpay.prototype.init = function () {}
+BitPay.prototype.init = function () {}
 
 //pass a custom config object, or use the Ti.App.xml file
-Bitpay.configure = function (config) {
+BitPay.configure = function (config) {
     if (config != undefined) {
         this.API_URL = config.API_URL
         this.API_KEY = config.API_KEY
@@ -17,19 +17,28 @@ Bitpay.configure = function (config) {
     }
 }
 
-Bitpay.getCurrency = function () {
+BitPay.createButton = function(){
+    var btn = Titanium.UI.createImageView({
+        top:10,
+        width:'30%',
+        image:'/images/bitpaybutton.png'
+    });
+    return btn;
+}
+
+BitPay.getCurrency = function () {
     return this.API_CURRENCY
 }
 
-Bitpay.getAPIKey = function () {
+BitPay.getAPIKey = function () {
     return this.API_KEY
 }
 
-Bitpay.getAPI = function () {
+BitPay.getAPI = function () {
     return this.API_URL
 }
 
-Bitpay.remote = function (method, url) {
+BitPay.remote = function (method, url) {
     var xhr_remote = Titanium.Network.createHTTPClient({
         validatesSecureCertificate: true,
     });
@@ -38,7 +47,7 @@ Bitpay.remote = function (method, url) {
 
 }
 
-Bitpay.sendTransaction = function (item) {
+BitPay.sendTransaction = function (item) {
 
     var that = this
     var xhr = this.remote("POST", this.getAPI());
@@ -74,11 +83,11 @@ Bitpay.sendTransaction = function (item) {
 }
 
 
-Bitpay.showAndroidModal = function (obj) {
+BitPay.showAndroidModal = function (obj) {
     Titanium.Platform.openURL(obj.invoice_url)
 }
 
-Bitpay.showIOSModal = function (obj) {
+BitPay.showIOSModal = function (obj) {
 
     var bitpayWebview = Titanium.UI.createWebView({
         url: obj.invoice_url,
@@ -171,7 +180,7 @@ Bitpay.showIOSModal = function (obj) {
 
 
 //platform detection
-Bitpay.isAndroid = function () {
+BitPay.isAndroid = function () {
     var isAndroid = false;
     var isIOS = false;
     var isSimulator = false;
@@ -206,4 +215,4 @@ Bitpay.isAndroid = function () {
     return isAndroid
 } //end isAndroid
 
-module.exports = Bitpay;
+module.exports = BitPay;
