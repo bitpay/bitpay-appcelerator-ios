@@ -5,37 +5,44 @@ BitPay.prototype.init = function () {}
 
 //pass a custom config object, or use the Ti.App.xml file
 BitPay.configure = function (config) {
-    if (config != undefined) {
-        this.API_URL = config.API_URL
-        this.API_KEY = config.API_KEY
-        this.API_CURRENCY = config.API_CURRENCY
-    } else {
-        //defaults from Ti.App.xml
-        this.API_URL = Ti.App.Properties.getString('bitpayapi')
-        this.API_KEY = Ti.App.Properties.getString('bitpayapikey')
-        this.API_CURRENCY = Ti.App.Properties.getString('bitpaycurrency')
-    }
+    this.ENV = config.ENV //env is dev or prod
+    this.setENV(this.ENV)
 }
 
-BitPay.createButton = function(){
+
+BitPay.setENV = function (env) {
+    this.ENV = env;
+    Ti.App.Properties.setString('env', env)
+}
+
+BitPay.getENV = function () {
+    return Ti.App.Properties.getString('env')
+}
+
+BitPay.createButton = function () {
     var btn = Titanium.UI.createImageView({
-        top:10,
-        width:'30%',
-        image:'/images/bitpaybutton.png'
+        top: 10,
+        width: '30%',
+        image: '/images/bitpaybutton.png'
     });
     return btn;
 }
 
 BitPay.getCurrency = function () {
-    return this.API_CURRENCY
+    return Ti.App.Properties.getString('bitpaycurrency')
 }
 
+
 BitPay.getAPIKey = function () {
-    return this.API_KEY
+    return Ti.App.Properties.getString('bitpayapikey')
 }
 
 BitPay.getAPI = function () {
-    return this.API_URL
+    if (this.ENV == '' || this.ENV == 'dev') {
+        return Ti.App.Properties.getString('bitpayapidev');
+    } else {
+        return Ti.App.Properties.getString('bitpayapiprod')
+    }
 }
 
 BitPay.remote = function (method, url) {
@@ -48,12 +55,15 @@ BitPay.remote = function (method, url) {
 }
 
 BitPay.sendTransaction = function (item) {
-
     var that = this
-    var xhr = this.remote("POST", this.getAPI());
+    var xhr = this.remote("POST", this.getAPI() + '/invoices');
     item.currency = this.getCurrency()
-    item.app_api_key = this.getAPIKey()
+    item.token = this.getAPIKey()
     xhr.send(item)
+    xhr.onerror = function () {
+        console.log('errer', this.responseText)
+    }
+    /*
     xhr.onerror = function () {
         var errd = Titanium.UI.createAlertDialog({
             title: 'Error',
@@ -62,10 +72,14 @@ BitPay.sendTransaction = function (item) {
         })
         errd.show();
     }
+    */
 
     xhr.onload = function () {
+        console.log('success', this.responseText)
         var response = JSON.parse(this.responseText)
-        if (response.status == 'success') {
+        //console.log('response',response)
+
+        if (response.data.status == 'new') {
             if (that.isAndroid()) {
                 that.showAndroidModal(response)
             } else {
@@ -74,7 +88,7 @@ BitPay.sendTransaction = function (item) {
         } else {
             var errd = Titanium.UI.createAlertDialog({
                 title: 'Error',
-                message: response.msg,
+                message: 'Error creating invoice, please try again in a few minutes',
                 buttonNames: ['OK']
             })
             errd.show();
@@ -88,9 +102,8 @@ BitPay.showAndroidModal = function (obj) {
 }
 
 BitPay.showIOSModal = function (obj) {
-
     var bitpayWebview = Titanium.UI.createWebView({
-        url: obj.invoice_url,
+        url: obj.data.url,
     });
     console.log('bitpayWebview.url', bitpayWebview.url)
 
@@ -133,9 +146,9 @@ BitPay.showIOSModal = function (obj) {
     bitpayWebwin.open({
         modal: true
     })
-    bitpayWebwin.addEventListener('close',function(){
+    bitpayWebwin.addEventListener('close', function () {
         clearInterval(invoiceResponse);
-        
+
     })
 
     var invoiceResponse = setInterval(checkInvoiceStatus, 3000);
@@ -158,24 +171,16 @@ BitPay.showIOSModal = function (obj) {
 
         clearInterval(invoiceResponse);
         var cartMsg = Titanium.UI.createAlertDialog({
-            title:'Success',
-            message:'Your transaction has been completed.',
-            buttonNames:['OK']
+            title: 'Transaction Complete',
+            message: 'Thank you for your purchase.  Please check your email for details.',
+            buttonNames: ['OK']
         });
         cartMsg.show()
-        cartMsg.addEventListener('click',function(){
+        cartMsg.addEventListener('click', function () {
             bitpayWebwin.close()
         })
-       
-        
     }
-
-
-
-
     //This invoice has been paid.
-
-
 }
 
 
