@@ -13,9 +13,13 @@ var tab1 = Titanium.UI.createTab({
 	title: 'Tab 1',
 	window: win
 });
+tabGroup.bottom = -100;
 
 
 tabGroup.addTab(tab1);
 
-setTimeout(function(){ tabGroup.open(); }, 1500);
+// open tab group
+setTimeout(function () {
+	win.open()
 
+}, 3000);

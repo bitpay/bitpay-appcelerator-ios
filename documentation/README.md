@@ -9,7 +9,7 @@ Allows mobile applications built with Appcelerator to integrate with BitPay
 
 To access this module from JavaScript, you would do the following:
 
-    var Bitpay = require('bitpay');
+    var BitPay = require('bitpay');
 
 ## Reference
 
@@ -33,12 +33,12 @@ After your library is setup, there are two ways to configure the module
     
     Using this configuration, the module can be intialized like so:
     
-    `Bitpay.configure()`
+    `BitPay.configure()`
     
 2. Configure at runtime, useful if you need to dynamically change endpoints, API keys, currency, etc
 
 ```
-Bitpay.configure({
+BitPay.configure({
     API_URL: '<your api url>',
     API_KEY: '<your api key>',
     API_CURRENCY: '<your currency>'
@@ -61,7 +61,7 @@ You can appened properties to the item if you need to add custom parameters to y
 2.  Send to the server
 
 ```
-Bitpay.sendTransaction(item)
+BitPay.sendTransaction(item)
 ```
 This will open a BitPay modal, and will allow you to pass over the BitPay app to complete your transaction. 
 
