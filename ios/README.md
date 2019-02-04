@@ -18,7 +18,27 @@ The following parameters are used by the module.
 <property name="bitpaycurrency" type="string"><currency to use></property>
 ```
 
-The module **must** used the following paramter names (you can add your custom ones as needed)
+## Initialization
+
+* create the instance using the following code:
+
+```
+var BitPay = require('lib/bitpay');
+BitPay.configure({
+		ENV:'dev'
+	})
+
+```
+
+* create the checkout button
+
+```
+ var bitpayBtn = BitPay.createButton();
+```
+ 
+
+
+The module must used the following paramter names (you can add your custom ones as needed)
 
 ```
 var item = {
@@ -28,5 +48,13 @@ var item = {
         'buyer_email': '<buyers email>'
     }
 ```
+
+Finally, send the transaction
+
+```
+ BitPay.sendTransaction(item)
+```
+
+The module will monitor the modal window, and handle the status accordingly.
 
 

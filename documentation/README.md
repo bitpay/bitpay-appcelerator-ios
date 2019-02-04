@@ -1,85 +1,60 @@
-# BitPay Module
+## BitPay Sample Appcelerator App
 
-## Description
+This app requires the following
 
-Allows mobile applications built with Appcelerator to integrate with BitPay
+* A BitPay merchant account ([Test](http://test.bitpay.com) or [Production](http://www.bitpay.com))
+* An API Token ([Test](https://test.bitpay.com/dashboard/merchant/api-tokens) or [Production](https://bitpay.com/dashboard/merchant/api-tokens)
 
+When initializing the module, you must pass ***dev*** or ***production*** so the module can read the values from the **tiapp.xml** file .
 
-## Accessing the BitPay Module
+# tiapp.xml configuration
 
-To access this module from JavaScript, you would do the following:
-
-    var BitPay = require('bitpay');
-
-## Reference
-
-Install one of our BitPay Libraries
-
-PHP - <https://github.com/bitpay/php-bitpay-client>
-
-## Setup
-
-After your library is setup, there are two ways to configure the module
-
-1.  Setup using the tiapp.xml
-
-	###bitpayapi
-	Created when you setup the library
-	`<property name="bitpayapi" type="string">url to your endpoint</property>`
-	###bitpayapikey
-    `<property name="bitpayapikey" type="string">randomkey</property>`
-    ###bitpaycurrency
-    `<property name="bitpaycurrency" type="string">USD</property>`
-    
-    Using this configuration, the module can be intialized like so:
-    
-    `BitPay.configure()`
-    
-2. Configure at runtime, useful if you need to dynamically change endpoints, API keys, currency, etc
+The following parameters are used by the module.
 
 ```
+<property name="bitpayapidev" type="string">https://test.bitpay.com</property>
+<property name="bitpayapiprod" type="string">https://www.bitpay.com</property>
+<property name="bitpayapikey" type="string"><your api key></property>
+<property name="bitpaycurrency" type="string"><currency to use></property>
+```
+
+## Initialization
+
+* create the instance using the following code:
+
+```
+var BitPay = require('lib/bitpay');
 BitPay.configure({
-    API_URL: '<your api url>',
-    API_KEY: '<your api key>',
-    API_CURRENCY: '<your currency>'
-})
+		ENV:'dev'
+	})
+
 ```
 
-###Usage
-1.  Create your product to send to the server (***note these fields are required at a minimum***)
+* create the checkout button
+
+```
+ var bitpayBtn = BitPay.createButton();
+```
+ 
+
+
+The module must used the following paramter names (you can add your custom ones as needed)
 
 ```
 var item = {
-            'sku': <your sky>,
-            'description': <your description>,
-            'price': <your price>,
-            'buyer_email': <buyers email address>
-        }
-```
-You can appened properties to the item if you need to add custom parameters to your specific use-case.
-
-2.  Send to the server
-
-```
-BitPay.sendTransaction(item)
-```
-This will open a BitPay modal, and will allow you to pass over the BitPay app to complete your transaction. 
-
-You will receive a response from the API and can implement the proper flow based on the response.  This module expects a JSON response with property of `status` to be set.  `Success` will indicate a successful response from YOUR server, otherwise you will be responsible for handling errors.
-
-#####Example
-```
-var response = JSON.parse(this.responseText)
-    if (response.status == 'success') {
-    //module will continue on its own
-    }else{
-    //you will add error handling
+        'sku': '<sku>',
+        'description': <product description>,
+        'price': parseFloat(<price of item>),
+        'buyer_email': '<buyers email>'
     }
 ```
 
+Finally, send the transaction
 
-## Author
+```
+ BitPay.sendTransaction(item)
+```
 
-Joshua Lewis:  <jlewis@bitpay.com>
+The module will monitor the modal window, and handle the status accordingly.
 
-<http://www.bitpay.com>
+
